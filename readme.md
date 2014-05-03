@@ -1,0 +1,1 @@
+This is a chip8 emulator based on SDL
