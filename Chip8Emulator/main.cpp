@@ -8,7 +8,7 @@
 typedef unsigned __int8 u8;
 
 chip8 myChip8;
-int modifier = 10;
+int modifier = 5;
 u8 screenData[SCREEN_WIDTH][SCREEN_HEIGHT];
 SDL_Window *gWindow = NULL;
 SDL_Renderer *gRender = NULL;
@@ -59,6 +59,55 @@ void close()
 	SDL_Quit();
 
 	return;
+}
+
+void keyDown(SDL_Event &e)
+{
+	if (e.key.keysym.sym == SDLK_ESCAPE)
+		exit(0);
+
+	if (e.key.keysym.sym == SDLK_1)	myChip8.key[0x1] = 1;
+	else if (e.key.keysym.sym = SDLK_2) myChip8.key[0x2] = 1;
+	else if (e.key.keysym.sym = SDLK_3) myChip8.key[0x3] = 1;
+	else if (e.key.keysym.sym = SDLK_4) myChip8.key[0xC] = 1;
+
+	else if (e.key.keysym.sym = SDLK_q) myChip8.key[0x4] = 1;
+	else if (e.key.keysym.sym = SDLK_w) myChip8.key[0x5] = 1;
+	else if (e.key.keysym.sym = SDLK_e) myChip8.key[0x6] = 1;
+	else if (e.key.keysym.sym = SDLK_r) myChip8.key[0xD] = 1;
+
+	else if (e.key.keysym.sym = SDLK_a) myChip8.key[0x7] = 1;
+	else if (e.key.keysym.sym = SDLK_s) myChip8.key[0x8] = 1;
+	else if (e.key.keysym.sym = SDLK_d) myChip8.key[0x9] = 1;
+	else if (e.key.keysym.sym = SDLK_f) myChip8.key[0xE] = 1;
+
+	else if (e.key.keysym.sym = SDLK_z) myChip8.key[0xA] = 1;
+	else if (e.key.keysym.sym = SDLK_x) myChip8.key[0x0] = 1;
+	else if (e.key.keysym.sym = SDLK_c) myChip8.key[0xB] = 1;
+	else if (e.key.keysym.sym = SDLK_v) myChip8.key[0xF] = 1;
+}
+
+void keyUp(SDL_Event &e)
+{
+	if (e.key.keysym.sym == SDLK_1)	myChip8.key[0x1] = 0;
+	else if (e.key.keysym.sym = SDLK_2) myChip8.key[0x2] = 0;
+	else if (e.key.keysym.sym = SDLK_3) myChip8.key[0x3] = 0;
+	else if (e.key.keysym.sym = SDLK_4) myChip8.key[0xC] = 0;
+
+	else if (e.key.keysym.sym = SDLK_q) myChip8.key[0x4] = 0;
+	else if (e.key.keysym.sym = SDLK_w) myChip8.key[0x5] = 0;
+	else if (e.key.keysym.sym = SDLK_e) myChip8.key[0x6] = 0;
+	else if (e.key.keysym.sym = SDLK_r) myChip8.key[0xD] = 0;
+
+	else if (e.key.keysym.sym = SDLK_a) myChip8.key[0x7] = 0;
+	else if (e.key.keysym.sym = SDLK_s) myChip8.key[0x8] = 0;
+	else if (e.key.keysym.sym = SDLK_d) myChip8.key[0x9] = 0;
+	else if (e.key.keysym.sym = SDLK_f) myChip8.key[0xE] = 0;
+
+	else if (e.key.keysym.sym = SDLK_z) myChip8.key[0xA] = 0;
+	else if (e.key.keysym.sym = SDLK_x) myChip8.key[0x0] = 0;
+	else if (e.key.keysym.sym = SDLK_c) myChip8.key[0xB] = 0;
+	else if (e.key.keysym.sym = SDLK_v) myChip8.key[0xF] = 0;
 }
 
 void display()
@@ -114,7 +163,15 @@ int main(int argc, char **argv)
 		{
 			if (e.type == SDL_QUIT)
 			{
-				quit == true;
+				quit = true;
+			}
+			else if (e.type == SDL_KEYDOWN)
+			{
+				keyDown(e);
+			}
+			else if (e.type == SDL_KEYUP)
+			{
+				keyUp(e);
 			}
 		}
 		display();
