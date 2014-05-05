@@ -183,9 +183,6 @@ int main(int argc, char **argv)
 
 		if (pause) continue;
 
-
-		Uint32 a = SDL_GetTicks();
-
 		display();
 	}
 
