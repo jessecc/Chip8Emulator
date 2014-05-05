@@ -12,6 +12,10 @@ int modifier = 5;
 u8 screenData[SCREEN_WIDTH][SCREEN_HEIGHT];
 SDL_Window *gWindow = NULL;
 SDL_Renderer *gRender = NULL;
+bool pause = false;
+bool quit = false;
+const int SCREEN_FPS = 100;
+const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 void LogSDLError(const char* msg)
 {
@@ -64,7 +68,10 @@ void close()
 void keyDown(SDL_Event &e)
 {
 	if (e.key.keysym.sym == SDLK_ESCAPE)
-		exit(0);
+		quit = true;
+
+	if (e.key.keysym.sym == SDLK_PAUSE)
+		pause = !pause;
 
 	if (e.key.keysym.sym == SDLK_1)	myChip8.key[0x1] = 1;
 	else if (e.key.keysym.sym == SDLK_2) myChip8.key[0x2] = 1;
@@ -115,6 +122,7 @@ void display()
 	myChip8.emulateCycle();
 	if (myChip8.drawFlag)
 	{
+		Uint32 tick1 = SDL_GetTicks();
 		SDL_SetRenderDrawColor(gRender, 0, 0, 0, 0);
 		SDL_RenderClear(gRender);
 		SDL_SetRenderDrawColor(gRender, 0xFF, 0xFF, 0xFF, 0x0);
@@ -135,6 +143,8 @@ void display()
 		}
 
 		SDL_RenderPresent(gRender);
+		Uint32 tick2 = SDL_GetTicks() - tick1;
+		if (tick2 < SCREEN_TICKS_PER_FRAME) SDL_Delay(SCREEN_TICKS_PER_FRAME - tick2);
 		myChip8.drawFlag = false;
 	}
 }
@@ -155,17 +165,13 @@ int main(int argc, char **argv)
 		return 2;
 	}
 
-	bool quit = false;
 	SDL_Event e;
 	while (!quit)
 	{
+		Uint32 tick1 = SDL_GetTicks();
 		while (SDL_PollEvent(&e) != 0)
 		{
-			if (e.type == SDL_QUIT)
-			{
-				quit = true;
-			}
-			else if (e.type == SDL_KEYDOWN)
+			if (e.type == SDL_KEYDOWN)
 			{
 				keyDown(e);
 			}
@@ -174,6 +180,12 @@ int main(int argc, char **argv)
 				keyUp(e);
 			}
 		}
+
+		if (pause) continue;
+
+
+		Uint32 a = SDL_GetTicks();
+
 		display();
 	}
 
