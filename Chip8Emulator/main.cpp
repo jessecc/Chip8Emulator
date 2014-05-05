@@ -168,7 +168,6 @@ int main(int argc, char **argv)
 	SDL_Event e;
 	while (!quit)
 	{
-		Uint32 tick1 = SDL_GetTicks();
 		while (SDL_PollEvent(&e) != 0)
 		{
 			if (e.type == SDL_KEYDOWN)
